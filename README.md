@@ -38,9 +38,7 @@ The Outliner library can be used via the command line interface (CLI) to trace P
 
 1. Open your terminal.
 
-2. Navigate to the directory containing the `outliner.py` file.
-
-3. Run the following command to trace a Python object's execution:
+2. Run the following command to trace a Python object's execution:
 
 ```bash
 outliner --file_path=<path-to-object> --object_name=<object-name> --object_args=<arguments-passed-to-object>
