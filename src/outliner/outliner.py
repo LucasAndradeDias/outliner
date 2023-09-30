@@ -25,6 +25,16 @@ class Outliner:
         display_class = Display(trace.detailed_data, trace.functions_flow)
         display_class.tree()
 
+
+
+
+
+
+
+
+
+
+
     def _check_file(self):
         if not Path(self.file_path).is_file():
             raise ("Not a valid file")
