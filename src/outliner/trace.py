@@ -34,7 +34,6 @@ class Trace:
             if not callable(method):
                 raise Exception(f"given object '{func}' is not callable.")
 
-
             sys.settrace(self.trace_function)
             method()
             sys.settrace(None)
