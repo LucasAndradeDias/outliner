@@ -12,31 +12,34 @@ class Trace:
 
     def trace_function(self, frame, event, arg):
         self.detailed_data[frame.f_code.co_name][str(event)] += 1
-
         self.functions_flow[frame.f_code.co_name] = None
-
         return self.trace_function
 
     def run(self, module_name: str, func: str, func_params=None):
         try:
             trace_import = importlib.util.spec_from_file_location(func, module_name)
             trace_obj = importlib.util.module_from_spec(trace_import)
-
             trace_import.loader.exec_module(trace_obj)
 
-            method = None
+            object_to_run = getattr(trace_obj, func)
+
+            if not callable(object_to_run):
+                raise Exception("given object '%s' is not callable." % (func))
 
             if func_params:
-                method = getattr(trace_obj, func)(*func_params)
+                self._running_trace(object_to_run, *func_params)
             else:
-                method = getattr(trace_obj, func)
+                self._running_trace(object_to_run)
 
-            if not callable(method):
-                raise Exception(f"given object '{func}' is not callable.")
+        except Exception as e:
+            raise Exception("Error on the execution of the module: \n %s" % (e))
 
+    def _running_trace(self, obj, *arguments):
+        if arguments:
             sys.settrace(self.trace_function)
-            method()
+            obj(*arguments)
             sys.settrace(None)
-
-        except Exception as error:
-            raise (error)
+        else:
+            sys.settrace(self.trace_function)
+            obj()
+            sys.settrace(None)
