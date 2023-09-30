@@ -21,12 +21,12 @@ class Outliner:
         self._check_file()
 
         trace = Trace()
-        trace.run(self.file_path, object_name, object_args if object_name else None)
+        trace.run(self.file, self.obj_name, self.obj_args if self.obj_args else None)
         display_class = Display(trace.detailed_data, trace.functions_flow)
         display_class.tree()
 
     def _check_file(self):
-        if not Path(self.file_path).is_file():
+        if not Path(self.file).is_file():
             raise ("Not a valid file")
-        if not ".py" in self.file_path:
+        if not ".py" in self.file:
             raise ("Not a python file")
