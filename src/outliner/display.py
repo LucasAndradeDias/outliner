@@ -10,12 +10,44 @@ class Display:
         if self.detail_data.get("<module>"):
             del self.detail_data["<module>"]
 
+        self.ansi_for_tree = {
+            "MAIN_OBJECT_ANSI": "\033[38;5;208m",
+            "RESET": "\x1b[0m",
+            "VERTICAL_LINE": "\u2502",
+            "Regular_line": "\u2500",
+            "CHILD_OBJECT_ANSI": "\033[36m",
+        }
+
     def tree(self):
         position = 0
         for i in self.functions_flow:
-            connector2 = "  " + "|" + "---" * position if position != 0 else ""
-            print(connector2 + f" {i}()")
+            connector_root = (
+                "    "
+                + self.ansi_for_tree["MAIN_OBJECT_ANSI"]
+                + i
+                + self.ansi_for_tree["RESET"]
+                + "\n"
+            )
+            lines = (
+                "\n    "
+                + self.ansi_for_tree["VERTICAL_LINE"]
+                + (self.ansi_for_tree["Regular_line"] * 2)
+            )
+            connect_branch = (
+                lines
+                + self.ansi_for_tree["CHILD_OBJECT_ANSI"]
+                + i
+                + "\n"
+                + self.ansi_for_tree["RESET"]
+            )
+
+            connector_display = connector_root if position == 0 else connect_branch
+
+            sys.stdout.write(connector_display)
+            sys.stdout.write(str("    " + self.ansi_for_tree["VERTICAL_LINE"] + "\n"))
+            sys.stdout.flush()
             position += 1
+
         return
         # add recursion
 
