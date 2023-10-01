@@ -17,7 +17,7 @@ def main():
     instance_class = Outliner(
         args.file_path,
         args.object_name,
-        args.object_args[0].split() if args.object_args[0].split() else None,
+        args.object_args[0].split() if args.object_args else None,
     )
 
     instance_class.run()
