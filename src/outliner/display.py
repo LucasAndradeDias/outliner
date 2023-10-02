@@ -1,4 +1,3 @@
-import pprint
 import sys
 
 
@@ -20,6 +19,7 @@ class Display:
 
     def tree(self):
         position = 0
+
         for i in self.functions_flow:
             connector_root = (
                 "    "
@@ -48,12 +48,12 @@ class Display:
             sys.stdout.flush()
             position += 1
 
-        return
         # add recursion
 
     def detailed_data(self, target=""):
         for i in self.detail_data.items():
-            pprint.pprint(
-                i if not target else (f"{target}: {self.detail_data[target]}")
+            display_message = (
+                str(i) if not target else (f"{target}: {self.detail_data[target]}")
             )
-        return
+            sys.stdout.write(display_message)
+            sys.stdout.flush()
