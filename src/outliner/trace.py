@@ -43,3 +43,19 @@ class Trace:
             sys.settrace(self.trace_function)
             obj()
             sys.settrace(None)
+
+    def __str__(self):
+        text = "Trace object\nrunned objects:\n    "
+
+        for i in self.detailed_data:
+            text = text + i + "\n    "
+
+        return text
+
+    def __repr__(self):
+        text = r"Trace object\nrunned objects:\n    "
+
+        for i in self.detailed_data:
+            text = text + rf"{i} + \n    "
+
+        return text
