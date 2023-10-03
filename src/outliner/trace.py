@@ -10,10 +10,10 @@ class Trace:
         )
         self.functions_flow = collections.OrderedDict()
 
-    def trace_function(self, frame, event, arg):
+    def _trace_function(self, frame, event, arg):
         self.detailed_data[frame.f_code.co_name][str(event)] += 1
         self.functions_flow[frame.f_code.co_name] = None
-        return self.trace_function
+        return self._trace_function
 
     def run(self, module_name: str, func: str, func_params=None):
         try:
@@ -36,11 +36,11 @@ class Trace:
 
     def _running_trace(self, obj, *arguments):
         if arguments:
-            sys.settrace(self.trace_function)
+            sys.settrace(self._trace_function)
             obj(*arguments)
             sys.settrace(None)
         else:
-            sys.settrace(self.trace_function)
+            sys.settrace(self._trace_function)
             obj()
             sys.settrace(None)
 
