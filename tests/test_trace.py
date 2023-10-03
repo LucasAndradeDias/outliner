@@ -1,4 +1,4 @@
-    import unittest
+import unittest
 import collections
 import sys
 
@@ -15,7 +15,9 @@ class test_trace(unittest.TestCase):
         self.parser = Trace()
 
     def tearDown(self):
-        self.parser.detailed_data = collections.defaultdict()
+        self.parser.detailed_data = collections.defaultdict(
+            lambda: {"call": 0, "return": 0, "line": 0}
+        )
         self.parser.functions_flow = collections.OrderedDict()
 
     def test_run_positive_input(self):
@@ -34,9 +36,42 @@ class test_trace(unittest.TestCase):
 
         self.assertEqual(expected_trace, repr(self.parser))
 
-    def test_run_negative_no_module(self):
+    def test_trace_run_negative_no_module(self):
+        """
+        Given an invalid module path,
+        When Trace.run is called with these parameters,
+        Then it should raise an exception with an appropriate error message.
+        """
         with self.assertRaises(Exception) as error:
-            self.parser.run("not valid path", "object")
+            self.parser.run("not_valid_path", "object")
+        self.assertTrue("Error on the execution of the module" in str(error.exception))
+
+    def test_trace_run_negative_non_callable_object(self):
+        """
+        Given a valid module path and a non-callable object "non_callable",
+        When Trace.run is called with these parameters,
+        Then it should raise an exception with an appropriate error message.
+        """
+        module_path = (
+            self.mock_path + "/module_testing_2.py"
+        )  # Contains a non-callable object
+        with self.assertRaises(Exception) as error:
+            self.parser.run(module_path, "non_callable")
+            self.assertEqual(
+                "Object 'non_callable' not found in module" in str(error.exception)
+            )
+
+    def test_trace_run_positive_multiple_runs(self):
+        """
+        Given a valid module path and a callable function "test",
+        When Trace.run is called twice with these parameters,
+        Then it should trace the functions individually and produce the expected trace result for each run.
+        """
+        module_path = self.mock_path + "/module_testing_1.py"
+        self.parser.run(module_path, "test")
+        self.parser.run(module_path, "test2")
+        expected_trace = r"Trace object\nrunned objects:\n    __init__ + \n    func1 + \n    func2 + \n    test2 + \n    "
+        self.assertEqual(expected_trace, repr(self.parser))
 
 
 if __name__ == "__main__":
