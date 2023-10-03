@@ -21,7 +21,7 @@ class Trace:
             trace_obj = importlib.util.module_from_spec(trace_import)
             trace_import.loader.exec_module(trace_obj)
 
-            object_to_run = getattr(trace_obj, func)
+            object_to_run = getattr(trace_obj, func, None)
 
             if not callable(object_to_run):
                 raise Exception("given object '%s' is not callable." % (func))
