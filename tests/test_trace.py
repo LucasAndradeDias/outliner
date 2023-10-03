@@ -21,12 +21,23 @@ class test_trace(unittest.TestCase):
         self.parser.functions_flow = collections.OrderedDict()
 
     def test_run_positive_input(self):
+        """
+        Given a valid module path and a callable function "test",
+        When Trace.run is called with these parameters,
+        Then it should trace the function and produce the expected trace result.
+        """
         module_path = self.mock_path + "/module_testing_1.py"
         self.parser.run(module_path, "test")
         expected_trace = r"Trace object\nrunned objects:\n    __init__ + \n    func1 + \n    func2 + \n    "
         self.assertEqual(expected_trace, repr(self.parser))
 
     def test_run_positive_input_with_parameters(self):
+        """
+        Given a valid module path, a callable function "numberToIp",
+        and function parameters ["000"],
+        When Trace.run is called with these parameters,
+        Then it should trace the function and produce the expected trace result.
+        """
         module_path = self.mock_path + "/module_testing_2.py"
         self.parser.run(module_path, "numberToIp", ["000"])
 
