@@ -1,10 +1,11 @@
 
-# Outliner (Alpha)
+# Outliner
 
-Have you ever found an python complex object that you get lost trying to undestand the invoking sequence?! Now it is a solved problem.
+Have you ever got confused trying to undestand python complex object invoking sequence?! Now it is a solved problem.
+
+Outliner is a Python utility designed to simplify the process of tracing the calling flow of callable objects within a complex Python object. It aims to help developers understand the order in which callable objects are invoked within complex code structures, making it easier to navigate and comprehend such structures.
 
 
-Outliner is a Python utility that simplifies the process of tracing the calling flow of callable objects within a complex object. It helps you understand the order in which these callable objects are invoked, making it easier to navigate and comprehend complex code structures.
 
 ## Table of Contents
 - [Example](#example)
@@ -16,7 +17,7 @@ Outliner is a Python utility that simplifies the process of tracing the calling 
 ## Example
 
 We have the given complex object:
-```
+```python
 class test:
     def __init__(self) -> None:
         self.func1()
@@ -30,12 +31,12 @@ def test2():
     return
 ``` 
 
-With the outliner you can visualyze the invoking flow in order with the default tree display:
+With the outliner you can visualize the invoking flow in order with the default tree display:
 ```
  outliner --file_path=path-to-module --object_name=test
 ```
-
-```
+output:
+```bash
     test2
     │
     │──1. __init__
@@ -50,7 +51,7 @@ Or get more detailed data about invoked objects (-d="detailed_data"):
  outliner --file_path=path-to-module --object_name=test --d="detailed_data"
 ```
 output:
-```
+```bash
 ('test2', {'call': 1, 'return': 1, 'line': 2})
 ('__init__', {'call': 1, 'return': 1, 'line': 1})
 ('func1', {'call': 1, 'return': 1, 'line': 2})
@@ -62,7 +63,7 @@ output:
 
 -   **Function Tracing**: Trace function calls, returns, and line execution within a Python module.
 -   **Data Collection**: Collect detailed data on function executions and execution flow.
--   **Method Tree**: Display a tree of methods used by the object for object behavior exploration.
+-   **Method Tree**: Display a tree of functions used by the object for object behavior exploration.
 -   **Easy Integration**: Simple and straightforward integration into your Python projects.
 -   **Customizable**: Fine-tune tracing parameters to suit your debugging and exploration
 
@@ -77,15 +78,24 @@ As the library hasn't been released yet, to use it on your machine, you will nee
 
 ## Usage
 
-The Outliner library can be used via the command line interface (CLI) to trace Python code. Follow the steps below to use it:
+The Outliner library can be used via the command-line interface (CLI) to trace Python code. Follow these steps to use it:
 
-1. Open your terminal.
+1.  Open your terminal.
+    
+2.  Run the following command to trace a Python object's execution:
+    
 
-2. Run the following command to trace a Python object's execution:
+bashCopy code
 
-```bash
-outliner --file_path=<path-to-object> --object_name=<object-name> --object_args=<arguments-passed-to-object>
-```
+`outliner --file_path=<path-to-object> --object_name=<object-name> --object_args=<arguments-passed-to-object>` 
+
+## Command Line Options
+
+-   `--file_path`: Specifies the path to the Python module containing the object to be traced.
+    
+-   `--object_name`: Specifies the name of the object to be traced.
+    
+-   `--object_args`: Optionally, you can specify arguments to pass to the object.
 
 ## Contributing
 
