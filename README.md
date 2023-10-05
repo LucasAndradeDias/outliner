@@ -1,5 +1,5 @@
 
-# Outliner (Under development)
+# Outliner (Alpha)
 
 The Outliner library is a Python tool that helps users trace and analyze complex objects, providing valuable insights and information about them. Whether you're dealing with intricate data structures or challenging scenarios, Outliner can assist you in gaining a clearer understanding.
 
@@ -20,16 +20,10 @@ The Outliner library is a Python tool that helps users trace and analyze complex
 ## Instalation
 As the library hasn't been released yet, to use it on your machine, you will need to do following steps:
 
--	**Clone the repository:**
-	```
-	git clone https://github.com/LucasAndradeDias/outliner.git path/you/want/to/save
-	cd path/you/want/to/save
-	```
-
 -	**Use pip install:**
 	Make sure that path contains the setup.py file
 	``` 
-	pip install .
+	pip install -i https://test.pypi.org/simple/ outliner
 	```
 
 ## Usage
