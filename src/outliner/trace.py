@@ -15,7 +15,7 @@ class Trace:
         self.functions_flow[frame.f_code.co_name] = None
         return self._trace_function
 
-    def run(self, module_name: str, func: str, func_params=None):
+    def run_file(self, module_name: str, func: str, func_params=None):
         try:
             trace_import = importlib.util.spec_from_file_location(func, module_name)
             trace_obj = importlib.util.module_from_spec(trace_import)
