@@ -28,7 +28,7 @@ class test_display(unittest.TestCase):
 
     @patch("sys.stdout", new_callable=StringIO)
     def test_display_tree_positive_input(self, stdout):
-        expected_result = "    \x1b[38;5;208mtest2\x1b[0m\n    │\n\n    │──\x1b[36m__init__\n\x1b[0m    │\n\n    │──\x1b[36mfunc1\n\x1b[0m    │\n\n    │──\x1b[36mfunc2\n\x1b[0m    │\n"
+        expected_result = "    \x1b[38;5;208mtest2\x1b[0m\n    │\n    │──\x1b[36m1. __init__\n\x1b[0m    │\n    │──\x1b[36m2. func1\n\x1b[0m    │\n    │──\x1b[36m3. func2\n\x1b[0m"
         self.parser.tree()
         self.assertEqual(stdout.getvalue(), expected_result)
 

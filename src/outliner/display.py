@@ -36,6 +36,7 @@ class Display:
             connect_branch = (
                 lines
                 + self.ansi_for_tree["CHILD_OBJECT_ANSI"]
+                + f"{position}. "
                 + i
                 + "\n"
                 + self.ansi_for_tree["RESET"]
@@ -44,7 +45,11 @@ class Display:
             connector_display = connector_root if position == 0 else connect_branch
 
             sys.stdout.write(connector_display)
-            sys.stdout.write(str("    " + self.ansi_for_tree["VERTICAL_LINE"] + "\n"))
+
+            if position == (len(self.functions_flow) - 1):
+                return
+
+            sys.stdout.write(str("    " + self.ansi_for_tree["VERTICAL_LINE"]))
             sys.stdout.flush()
             position += 1
 
