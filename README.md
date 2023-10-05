@@ -1,13 +1,62 @@
 
 # Outliner (Alpha)
 
-The Outliner library is a Python tool that helps users trace and analyze complex objects, providing valuable insights and information about them. Whether you're dealing with intricate data structures or challenging scenarios, Outliner can assist you in gaining a clearer understanding.
+Have you ever found an python complex object that you get lost trying to undestand the invoking sequence?! Now it is a solved problem.
+
+
+Outliner is a Python utility that simplifies the process of tracing the calling flow of callable objects within a complex object. It helps you understand the order in which these callable objects are invoked, making it easier to navigate and comprehend complex code structures.
 
 ## Table of Contents
+- [Example](#example)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Features](#features)
 - [Contributing](#contributing)
+
+## Example
+
+We have the given complex object:
+```
+class test:
+    def __init__(self) -> None:
+        self.func1()
+    def func1(self):
+        self.func2()
+        return
+    def func2(self):
+        return
+def test2():
+    a = test()
+    return
+``` 
+
+With the outliner you can visualyze the invoking flow in order with the default tree display:
+```
+ outliner --file_path=path-to-module --object_name=test
+```
+
+```
+    test2
+    │
+    │──1. __init__
+    │
+    │──2. func1
+    │
+    │──3. func2
+```
+
+Or get more detailed data about invoked objects (-d="detailed_data"):
+```
+ outliner --file_path=path-to-module --object_name=test --d="detailed_data"
+```
+output:
+```
+('test2', {'call': 1, 'return': 1, 'line': 2})
+('__init__', {'call': 1, 'return': 1, 'line': 1})
+('func1', {'call': 1, 'return': 1, 'line': 2})
+('func2', {'call': 1, 'return': 1, 'line': 1})
+```
+
 
 ## Features
 
@@ -17,7 +66,7 @@ The Outliner library is a Python tool that helps users trace and analyze complex
 -   **Easy Integration**: Simple and straightforward integration into your Python projects.
 -   **Customizable**: Fine-tune tracing parameters to suit your debugging and exploration
 
-## Instalation
+## Installation
 As the library hasn't been released yet, to use it on your machine, you will need to do following steps:
 
 -	**Use pip install:**
