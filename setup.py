@@ -6,6 +6,8 @@ setup(
     description="A tracer for compiled objects",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
+    license='MIT',
+    url="https://github.com/LucasAndradeDias/outliner",
     entry_points={
         "console_scripts": [
             "outliner = outliner.cli:main",
