@@ -60,5 +60,5 @@ class Display:
             display_message = (
                 str(i) if not target else (f"{target}: {self.detail_data[target]}")
             )
-            sys.stdout.write(display_message)
+            sys.stdout.write(display_message + "\n")
             sys.stdout.flush()
