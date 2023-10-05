@@ -48,7 +48,7 @@ output:
 
 Or get more detailed data about invoked objects (-d="detailed_data"):
 ```
- outliner --file_path=path-to-module --object_name=test --d="detailed_data"
+ outliner --file_path=path-to-module --object_name=test -d="detailed_data"
 ```
 output:
 ```bash
@@ -96,6 +96,7 @@ bashCopy code
 -   `--object_name`: Specifies the name of the object to be traced.
     
 -   `--object_args`: Optionally, you can specify arguments to pass to the object.
+-   `--display`: Optionally, you can choose the output type(tree or detaield_data)
 
 ## Contributing
 
