@@ -2,7 +2,7 @@ import unittest
 import collections
 import sys
 
-from outliner import display
+from src.outliner import Display
 from unittest.mock import patch
 from io import StringIO
 
@@ -22,9 +22,9 @@ detail_data = collections.defaultdict(
 )
 
 
-class test_display(unittest.TestCase):
+class TestDisplay(unittest.TestCase):
     def setUp(self):
-        self.parser = display.Display(detail_data, functions_flow)
+        self.parser = Display(detail_data, functions_flow)
 
     @patch("sys.stdout", new_callable=StringIO)
     def test_display_tree_positive_input(self, stdout):
@@ -32,7 +32,7 @@ class test_display(unittest.TestCase):
         self.parser.tree()
         self.assertEqual(stdout.getvalue(), expected_result)
 
-    @patch("outliner.display.Display")
+    @patch("outliner.Display")
     @patch("sys.stdout", new_callable=StringIO)
     def test_display_tree_with_no_data(self, stdout, module):
         running = module({}, {})
@@ -46,13 +46,9 @@ class test_display(unittest.TestCase):
         self.parser.detailed_data()
         self.assertEqual(expected_result, stdout.getvalue())
 
-    @patch("outliner.display.Display")
+    @patch("outliner.Display")
     @patch("sys.stdout", new_callable=StringIO)
     def test_detailed_data_negative_input(self, stdout, module):
         module_instance = module({}, {})
         module_instance.detailed_data()
         self.assertEqual("", stdout.getvalue())
-
-
-if __name__ == "__main__":
-    unittest.main()
