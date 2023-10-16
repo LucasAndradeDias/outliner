@@ -1,0 +1,8 @@
+on: [push, pull_request]
+
+jobs:
+  run_unit_tests:
+    runs_on: ubuntu-latest
+    steps:
+      run: python3 -m pip install -r requirements.txt
+      run: python3 -m unittest discover
