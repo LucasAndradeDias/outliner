@@ -15,12 +15,15 @@ class Display:
             "VERTICAL_LINE": "\u2502",
             "Regular_line": "\u2500",
             "CHILD_OBJECT_ANSI": "\033[36m",
+            "CHILD_WITH_EXECEPTION": "\033[31m",
         }
 
     def tree(self):
         position = 0
 
         for i in self.functions_flow:
+            func_With_exception = bool(self.detail_data[i].get("exception"))
+
             connector_root = (
                 "    "
                 + self.ansi_for_tree["MAIN_OBJECT_ANSI"]
@@ -35,7 +38,11 @@ class Display:
             )
             connect_branch = (
                 lines
-                + self.ansi_for_tree["CHILD_OBJECT_ANSI"]
+                + self.ansi_for_tree[
+                    "CHILD_OBJECT_ANSI"
+                    if not func_With_exception
+                    else "CHILD_WITH_EXECEPTION"
+                ]
                 + f"{position}. "
                 + i
                 + "\n"
