@@ -1,9 +1,6 @@
-import argparse
-import sys
-
 from pathlib import Path
-from .trace import Trace
-from .display import Display
+from modules.trace import Trace
+from modules.display import Display
 
 
 class Outliner:

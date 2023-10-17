@@ -1,5 +1,5 @@
 from .outliner import Outliner
-from .display import Display
-from .trace import Trace
+from modules.display import Display
+from modules.trace import Trace
 
 __all__ = ["Outliner", "Display", "Trace"]
