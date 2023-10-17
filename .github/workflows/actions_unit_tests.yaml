@@ -1,0 +1,20 @@
+on: [pull_request]
+
+jobs:
+  run_unit_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: PRINT LOCAL
+        run: pwd
+
+      - name: PRINT LOCAL
+        run: ls 
+
+      - name: Run unit tests
+        run: python3 -m unittest 

@@ -1,6 +1,6 @@
 from pathlib import Path
-from modules.trace import Trace
-from modules.display import Display
+from .modules.trace import Trace
+from .modules.display import Display
 
 
 class Outliner:
