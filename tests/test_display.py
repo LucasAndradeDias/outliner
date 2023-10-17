@@ -21,7 +21,6 @@ detail_data = collections.defaultdict(
     },
 )
 
-
 class TestDisplay(unittest.TestCase):
     def setUp(self):
         self.parser = Display(detail_data, functions_flow)
@@ -32,7 +31,7 @@ class TestDisplay(unittest.TestCase):
         self.parser.tree()
         self.assertEqual(stdout.getvalue(), expected_result)
 
-    @patch("outliner.Display")
+    @patch("src.outliner.Display")
     @patch("sys.stdout", new_callable=StringIO)
     def test_display_tree_with_no_data(self, stdout, module):
         running = module({}, {})
@@ -46,7 +45,7 @@ class TestDisplay(unittest.TestCase):
         self.parser.detailed_data()
         self.assertEqual(expected_result, stdout.getvalue())
 
-    @patch("outliner.Display")
+    @patch("src.outliner.Display")
     @patch("sys.stdout", new_callable=StringIO)
     def test_detailed_data_negative_input(self, stdout, module):
         module_instance = module({}, {})
