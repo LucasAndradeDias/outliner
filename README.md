@@ -1,7 +1,7 @@
 
 # Outliner
 
-Have you ever got confused trying to undestand python complex object invoking sequence?! Now it is a solved problem.
+Have you ever got confused trying to understand python complex object invoking sequence?! Now it is a solved problem.
 
 Outliner is a Python utility designed to simplify the process of tracing the calling flow of callable objects within a complex Python object. It aims to help developers understand the order in which callable objects are invoked within complex code structures, making it easier to navigate and comprehend such structures.
 
