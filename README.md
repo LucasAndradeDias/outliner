@@ -46,7 +46,9 @@ output:
     │──3. func2
 ```
 
-Or get more detailed data about invoked objects (-d="detailed_data"):
+(If some exception was raised while tracing, the broken object will appear write in red color.)
+
+Get more detailed data about invoked objects (-d="detailed_data"):
 ```
  outliner --file_path=path-to-module --object_name=test -d="detailed_data"
 ```
