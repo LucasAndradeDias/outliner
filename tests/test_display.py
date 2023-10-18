@@ -21,6 +21,17 @@ detail_data = collections.defaultdict(
     },
 )
 
+detail_data_with_exception = collections.defaultdict(
+    int,
+    {
+        "test2": {"call": 1, "return": 1, "line": 2},
+        "__init__": {"call": 1, "return": 1, "line": 1},
+        "func1": {"call": 1, "return": 1, "line": 2},
+        "func2": {"call": 1, "return": 1, "line": 1, "exception": 1},
+    },
+)
+
+
 class TestDisplay(unittest.TestCase):
     def setUp(self):
         self.parser = Display(detail_data, functions_flow)
@@ -50,4 +61,12 @@ class TestDisplay(unittest.TestCase):
     def test_detailed_data_negative_input(self, stdout, module):
         module_instance = module({}, {})
         module_instance.detailed_data()
+        self.assertEqual("", stdout.getvalue())
+
+    @patch("src.outliner.Display")
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_func_with_exception(self, stdout, module):
+        expected_result = "    \x1b[38;5;208mtest2\x1b[0m\n    │\n    │──\x1b[36m1. __init__\n\x1b[0m    │\n    │──\x1b[36m2. func1\n\x1b[0m    │\n    │──\x1b[33m3. func2\n\x1b[0m"
+        module_instance = module()
+        module_instance.tree()
         self.assertEqual("", stdout.getvalue())
