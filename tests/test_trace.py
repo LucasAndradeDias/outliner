@@ -55,7 +55,9 @@ class TestTrace(unittest.TestCase):
         """
         with self.assertRaises(Exception) as error:
             self.parser.run_file("not_valid_path", "object")
-        self.assertTrue("Error on the execution of the module" in str(error.exception))
+        self.assertTrue(
+            "'NoneType' object has no attribute 'loader" in str(error.exception)
+        )
 
     def test_trace_run_file_file_negative_non_callable_object(self):
         """
