@@ -14,13 +14,12 @@ class Outliner:
         """
         This method trace an object and prints out a tree with found data
         """
-
-        # verify file
         self._check_file()
 
         trace = Trace()
+
         trace.run_file(
-            self.file, self.obj_name, self.obj_args if self.obj_args else None
+            Path(self.file), self.obj_name, self.obj_args if self.obj_args else None
         )
         display_class = Display(trace.detailed_data, trace.functions_flow)
 
