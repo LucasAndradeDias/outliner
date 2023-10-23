@@ -1,6 +1,10 @@
 import sys
+
 import collections
 import importlib.util
+
+from pathlib import Path
+from typing import Optional
 
 
 class ExceptionWhileTracing(Exception):
@@ -25,7 +29,7 @@ class Trace:
 
         return self._trace_function
 
-    def _running_trace(self, obj, *arguments):
+    def _running_trace(self, obj, *arguments) -> None:
         try:
             sys.settrace(self._trace_function)
             obj() if not arguments else obj(*arguments)
@@ -36,18 +40,31 @@ class Trace:
         finally:
             sys.settrace(None)
 
-    def run_file(self, module_name: str, func: str, func_params=None):
-        trace_import = importlib.util.spec_from_file_location(func, module_name)
-        trace_obj = importlib.util.module_from_spec(trace_import)
-        trace_import.loader.exec_module(trace_obj)
+    def run_file(
+        self,
+        module_path: Path,
+        object_to_run: str,
+        object_params: Optional[list] = None,
+    ) -> None:
+        """
+        Trace a file
 
-        object_to_run = getattr(trace_obj, func, None)
+        :param Path-like module_path: The path to the module
+        :param str object_to_run: The object to be traced inside the module
+        :param list object_params
+        """
+        module_name = module_path.stem
+
+        moduleSpec = importlib.util.spec_from_file_location(module_name, module_path)
+        module_obj = importlib.util.module_from_spec(moduleSpec)
+
+        object_to_run = getattr(module_obj, module_name, None)
 
         if not callable(object_to_run):
-            raise Exception("given object '%s' is not callable." % (func))
+            raise Exception("given object '%s' is not callable." % (module_name))
 
-        if func_params:
-            self._running_trace(object_to_run, *func_params)
+        if object_params:
+            self._running_trace(object_to_run, *object_params)
         else:
             self._running_trace(object_to_run)
 
