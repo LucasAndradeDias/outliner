@@ -19,15 +19,13 @@ class Display:
         }
 
     def tree(self):
-        position = 0
-
-        for i in self.functions_flow:
-            func_With_exception = bool(self.detail_data[i].get("exception"))
+        for position, func in enumerate(self.functions_flow):
+            func_With_exception = bool(self.detail_data[func].get("exception"))
 
             connector_root = (
                 "    "
                 + self.ansi_for_tree["MAIN_OBJECT_ANSI"]
-                + i
+                + func
                 + self.ansi_for_tree["RESET"]
                 + "\n"
             )
@@ -44,7 +42,7 @@ class Display:
                     else "CHILD_WITH_EXECEPTION"
                 ]
                 + f"{position}. "
-                + i
+                + func
                 + "\n"
                 + self.ansi_for_tree["RESET"]
             )
@@ -59,8 +57,6 @@ class Display:
             sys.stdout.write(str("    " + self.ansi_for_tree["VERTICAL_LINE"]))
             sys.stdout.flush()
             position += 1
-
-        # add recursion
 
     def detailed_data(self, target=""):
         for i in self.detail_data.items():
