@@ -33,7 +33,7 @@ def test2():
 
 With the outliner you can visualize the invoking flow in order with the default tree display:
 ```
- outliner --file_path=path-to-module --object_name=test
+ outliner --file_path=path-to-module --object_name="test()"
 ```
 output:
 ```bash
@@ -50,7 +50,7 @@ output:
 
 Get more detailed data about invoked objects (-d="detailed_data"):
 ```
- outliner --file_path=path-to-module --object_name=test -d="detailed_data"
+ outliner --file_path=path-to-module --object_name="test()" -d="detailed_data"
 ```
 output:
 ```bash
@@ -93,12 +93,11 @@ bashCopy code
 
 ## Command Line Options
 
--   `--file_path`: Specifies the path to the Python module containing the object to be traced.
+-   `--file_path`(Required): Specifies the path to the Python module containing the object to be traced.
     
--   `--object_name`: Specifies the name of the object to be traced.
+-   `--object_name`(Required): The traced object instance
     
--   `--object_args`: Optionally, you can specify arguments to pass to the object.
--   `--display`: Optionally, you can choose the output type(tree or detaield_data)
+-   `--display`(Optional):The output type(tree or detaield_data)
 
 ## Contributing
 
