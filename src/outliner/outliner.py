@@ -1,3 +1,5 @@
+import re
+
 from pathlib import Path
 from .modules.trace import Trace
 from .modules.display import Display
@@ -8,12 +10,18 @@ class Outliner:
         self.file = file_path
         self.obj_name = object_name
         self.display_type = display_type
+        self.callable_object_parttern = re.compile(
+            r"\w+\((?:'\w+')?(?:\.\w+\('(?:\w+)'\))?\)"
+        )
 
     def run(self):
         """
         This method trace an object and prints out a tree with found data
         """
         self._check_file()
+
+        if not re.match(self.callable_object_parttern, self.obj_name):
+            raise ValueError("Not valid callable syntax")
 
         trace = Trace()
 
