@@ -14,13 +14,6 @@ def parser_arguments():
         required=True,
     )
     parser.add_argument(
-        "--object_args",
-        help="A list with the argumments required to run the object",
-        action="append",
-        type=str,
-        required=False,
-    )
-    parser.add_argument(
         "--display",
         "-d",
         help="Select the type of display you want",
@@ -37,7 +30,6 @@ def main():
     instance_class = Outliner(
         args.file_path,
         args.object_name,
-        args.object_args[0].split() if args.object_args else None,
         args.display,
     )
 

@@ -26,8 +26,8 @@ class TestTrace(unittest.TestCase):
         When Trace.run_file is called with these parameters,
         Then it should trace the function and produce the expected trace result.
         """
-        module_path = self.mock_path + "/module_testing_1.py"
-        self.parser.run_file(module_path, "test")
+        module_path = Path(self.mock_path + "/module_testing_1.py")
+        self.parser.run_file(module_path, "test()")
         expected_trace = r"Trace object\nrunned objects:\n    __init__ + \n    func1 + \n    func2 + \n    "
         self.assertEqual(expected_trace, repr(self.parser))
 
@@ -38,12 +38,10 @@ class TestTrace(unittest.TestCase):
         When Trace.run_file is called with these parameters,
         Then it should trace the function and produce the expected trace result.
         """
-        module_path = self.mock_path + "/module_testing_2.py"
-        self.parser.run_file(module_path, "numberToIp", ["000"])
+        module_path = Path(self.mock_path + "/module_testing_2.py")
+        self.parser.run_file(module_path, "numberToIp('000')")
 
-        expected_trace = (
-            r"Trace object\nrunned objects:\n    numberToIp + \n    <listcomp> + \n    "
-        )
+        expected_trace = r"Trace object\nrunned objects:\n    numberToIp + \n    "
 
         self.assertEqual(expected_trace, repr(self.parser))
 
@@ -53,8 +51,9 @@ class TestTrace(unittest.TestCase):
         When Trace.run_file is called with these parameters,
         Then it should raise an exception with an appropriate error message.
         """
+
         with self.assertRaises(Exception) as error:
-            self.parser.run_file("not_valid_path", "object")
+            self.parser.run_file(Path("not_valid_path"), "object")
         self.assertTrue(
             "'NoneType' object has no attribute 'loader" in str(error.exception)
         )
@@ -80,8 +79,8 @@ class TestTrace(unittest.TestCase):
         When Trace.run_file is called twice with these parameters,
         Then it should trace the functions individually and produce the expected trace result for each run.
         """
-        module_path = self.mock_path + "/module_testing_1.py"
-        self.parser.run_file(module_path, "test")
-        self.parser.run_file(module_path, "test2")
+        module_path = Path(self.mock_path + "/module_testing_1.py")
+        self.parser.run_file(module_path, "test()")
+        self.parser.run_file(module_path, "test2()")
         expected_trace = r"Trace object\nrunned objects:\n    __init__ + \n    func1 + \n    func2 + \n    test2 + \n    "
         self.assertEqual(expected_trace, repr(self.parser))
