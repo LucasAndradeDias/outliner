@@ -54,10 +54,16 @@ Get more detailed data about invoked objects (-d="detailed_data"):
 ```
 output:
 ```bash
-('test2', {'call': 1, 'return': 1, 'line': 2})
-('__init__', {'call': 1, 'return': 1, 'line': 1})
-('func1', {'call': 1, 'return': 1, 'line': 2})
-('func2', {'call': 1, 'return': 1, 'line': 1})
+        Invoked objects: 2
+
+        - test2:
+            lines: 2
+            called: 1
+            return: 1
+        - __init__:
+            lines: 3
+            called: 1
+            return: 1
 ```
 
 
