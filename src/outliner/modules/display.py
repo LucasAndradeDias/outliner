@@ -62,7 +62,7 @@ class Display:
         found_funcs_messages = []
 
         for key, value in self.detail_data.items():
-            func_message = f"{key}\n   called:{value.get('call')}\n   return: {value.get('return')}\n   lines: {value.get('line')}\n"
+            func_message = f"{key}\n   called: {value.get('call')}\n   return: {value.get('return')}\n   lines: {value.get('line')}\n"
             found_funcs_messages.append(func_message)
 
         display_message = "\n".join(sorted(found_funcs_messages))
