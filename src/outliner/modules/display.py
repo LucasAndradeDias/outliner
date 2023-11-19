@@ -2,7 +2,7 @@ import sys
 
 
 class Display:
-    def __init__(self, detailed_data, functions_flow):
+    def __init__(self, detailed_data: dict, functions_flow: dict):
         self.detail_data = detailed_data
         self.functions_flow = functions_flow
 
@@ -59,9 +59,14 @@ class Display:
             position += 1
 
     def detailed_data(self, target=""):
-        for i in self.detail_data.items():
-            display_message = (
-                str(i) if not target else (f"{target}: {self.detail_data[target]}")
-            )
-            sys.stdout.write(display_message)
-            sys.stdout.flush()
+        found_funcs_messages = []
+
+        for key, value in self.detail_data.items():
+            func_message = f"{key}\n   called: {value.get('call')}\n   return: {value.get('return')}\n   lines: {value.get('line')}\n"
+            found_funcs_messages.append(func_message)
+
+        display_message = "\n".join(sorted(found_funcs_messages))
+
+        sys.stdout.write(f"\nInvoked objects: {len(self.detail_data.items())}\n\n")
+        sys.stdout.write(display_message)
+        sys.stdout.flush()

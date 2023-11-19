@@ -51,9 +51,10 @@ class TestDisplay(unittest.TestCase):
 
     @patch("sys.stdout", new_callable=StringIO)
     def test_detailed_data_positive_input(self, stdout):
-        expected_result = "('test2', {'call': 1, 'return': 1, 'line': 2})('__init__', {'call': 1, 'return': 1, 'line': 1})('func1', {'call': 1, 'return': 1, 'line': 2})('func2', {'call': 1, 'return': 1, 'line': 1})"
+        expected_result = "\nInvoked objects: 4\n\n__init__\n   called: 1\n   return: 1\n   lines: 1\n\nfunc1\n   called: 1\n   return: 1\n   lines: 2\n\nfunc2\n   called: 1\n   return: 1\n   lines: 1\n\ntest2\n   called: 1\n   return: 1\n   lines: 2\n"
 
         self.parser.detailed_data()
+        # print(repr(stdout.getvalue()))
         self.assertEqual(expected_result, stdout.getvalue())
 
     @patch("src.outliner.Display")
