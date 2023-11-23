@@ -1,4 +1,3 @@
-
 # Outliner
 
 Have you ever got confused trying to understand python complex object invoking sequence?! Now it is a solved problem.
@@ -33,7 +32,7 @@ def test2():
 
 With the outliner you can visualize the invoking flow in order with the default tree display:
 ```
- outliner --file_path=path-to-module --object_name="test()"
+ outliner --file_path=path-to-module --object_invoke="test()"
 ```
 output:
 ```bash
@@ -50,7 +49,7 @@ output:
 
 Get more detailed data about invoked objects (-d="detailed_data"):
 ```
- outliner --file_path=path-to-module --object_name="test()" -d="detailed_data"
+ outliner --file_path=path-to-module --object_invoke="test()" -d="detailed_data"
 ```
 output:
 ```bash
@@ -81,7 +80,7 @@ As the library hasn't been released yet, to use it on your machine, you will nee
 -	**Use pip install:**
 	Make sure that path contains the setup.py file
 	``` 
-	pip install -i https://test.pypi.org/simple/ outliner
+	pip install -i outliner-tracer
 	```
 
 ## Usage
@@ -95,15 +94,15 @@ The Outliner library can be used via the command-line interface (CLI) to trace P
 
 bashCopy code
 
-`outliner --file_path=<path-to-object> --object_name=<object-name> --object_args=<arguments-passed-to-object>` 
+`outliner --file_path=<path-to-object> --object_invoke=<object-invoking>` 
 
 ## Command Line Options
 
 -   `--file_path`(Required): Specifies the path to the Python module containing the object to be traced.
     
--   `--object_name`(Required): The traced object instance
+-   `--object_invoke`(Required): The invoking stetament of the object you want to trace.
     
--   `--display`(Optional):The output type(tree or detaield_data)
+-   `--display`(Optional):The output type(tree or detaield_data).
 
 ## Contributing
 

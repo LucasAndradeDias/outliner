@@ -8,8 +8,8 @@ def parser_arguments():
         "--file_path", help="Path to the file you want to trace", required=True
     )
     parser.add_argument(
-        "--object_name",
-        help="The name of the object you want to trace",
+        "--object_invoke",
+        help="The invoking statement of the object",
         type=str,
         required=True,
     )
