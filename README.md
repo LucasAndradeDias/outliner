@@ -102,7 +102,7 @@ bashCopy code
     
 -   `--object_invoke`(Required): The invoking stetament of the object you want to trace.
     
--   `--mode`(Optional):The output mode (tree or detaield_data).
+-   `--mode`(Optional): The output mode (tree or detaield_data).
 
 ## Contributing
 
