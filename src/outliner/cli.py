@@ -5,20 +5,27 @@ from .outliner import Outliner
 def parser_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--file_path", help="Path to the file you want to trace", required=True
+        "--file_path",
+        "-fp",
+        help="Path to the file you want to trace",
+        required=True,
+        nargs=1,
     )
     parser.add_argument(
-        "--object_name",
-        help="The name of the object you want to trace",
+        "--object_invoke",
+        "-o",
+        help="The invoking statement of the object",
         type=str,
         required=True,
+        nargs=1,
     )
     parser.add_argument(
-        "--display",
-        "-d",
-        help="Select the type of display you want",
+        "--mode",
+        "-m",
+        help="Type of display you want (detailed_data or tree)",
         choices=["tree", "detailed_data"],
         default="tree",
+        nargs=1,
     )
 
     return parser.parse_args()
