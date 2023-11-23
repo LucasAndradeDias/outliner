@@ -22,7 +22,7 @@ def parser_arguments():
     parser.add_argument(
         "--mode",
         "-m",
-        help="Select the type of display you want (detailed_data or tree)",
+        help="Type of display you want (detailed_data or tree)",
         choices=["tree", "detailed_data"],
         default="tree",
         nargs=1,
