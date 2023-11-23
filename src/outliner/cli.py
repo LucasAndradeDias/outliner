@@ -36,8 +36,8 @@ def main():
 
     instance_class = Outliner(
         args.file_path,
-        args.object_name,
-        args.display,
+        args.object_invoke,
+        args.mode,
     )
 
     instance_class.run()
