@@ -64,7 +64,7 @@ class Trace_Obj:
         parenthesis_1 = obj.index("(")
         parenthesis_2 = obj.index(")")
         obj_arguments = obj[parenthesis_1 + 1 : parenthesis_2].split(",")
-        return None if not any(obj_arguments) else obj_arguments
+        return obj_arguments if any(obj_arguments) else None
 
     def _create_obj_instance(self, namespace: any, object_: str):
         object_name = object_.split("(")[0]
@@ -72,7 +72,7 @@ class Trace_Obj:
 
         obj_instance = getattr(namespace, object_name, None)
 
-        if object_arguments:
+        if object_arguments is not None:
             obj_instance = partial(obj_instance, *object_arguments)
 
         return obj_instance
@@ -86,8 +86,8 @@ class Trace_Obj:
 
         for number, _ in enumerate(objs):
             running_obj = self._create_obj_instance(father, objs[number])
-
             if len(objs) == number:
                 break
-            father = running_obj
+            father = running_obj()
+
         return running_obj
