@@ -24,10 +24,9 @@ class Running_Obj:
 
         return obj_instance
 
-    def create(self):
+    def instance(self):
         """Returns a instance of the object"""
 
-        running_obj = None
         father = self.script_obj.module()
         objs = self.obj_invoking.split(".") or [self.obj_invoking]
 
@@ -36,5 +35,7 @@ class Running_Obj:
             if len(objs) == number:
                 break
             father = running_obj()
+        return
 
-        return running_obj
+    def __call__(self):
+        self.instance()

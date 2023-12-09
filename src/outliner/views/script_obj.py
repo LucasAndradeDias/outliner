@@ -3,6 +3,7 @@ import sys
 
 from importlib import util
 from pathlib import Path
+from helpers.find_module import find_module_path
 
 
 class Script_Obj:
@@ -20,7 +21,6 @@ class Script_Obj:
         self.script_path = script_path
         self.object_ast = self._load_file_ast()
         self._imported_modules = self._find_imported_modules()
-
         self._add_imports()
 
     def _find_imported_modules(self) -> iter:
@@ -33,7 +33,7 @@ class Script_Obj:
                     yield alias.name
             elif isinstance(node, ast.ImportFrom):
                 if node.module is not None:
-                    yield node.module
+                    yield node
         return []
 
     def _load_file_ast(self) -> ast.parse:
@@ -44,7 +44,10 @@ class Script_Obj:
         """
         Add all found imports to the running gloabal namespace
         """
-        sys.path.append(i for i in self._imported_module)
+        try:
+            sys.path.append(find_module_path(i) for i in self._imported_modules)
+        except:
+            raise "Error while adding imports modules"
 
     def module(self):
         """
