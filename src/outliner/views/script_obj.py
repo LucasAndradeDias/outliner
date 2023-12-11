@@ -3,7 +3,7 @@ import sys
 
 from importlib import util
 from pathlib import Path
-from helpers.find_module import find_module_path
+from utils.find_module import find_module_path
 
 
 class Script_Obj:
@@ -33,21 +33,21 @@ class Script_Obj:
                     yield alias.name
             elif isinstance(node, ast.ImportFrom):
                 if node.module is not None:
-                    yield node
+                    yield node.module
         return []
+
+    def _add_imports(self):
+        """
+        Add all local modules used in script to the global namespace
+        """
+        for module_name in self._imported_modules:
+            module_found = find_module_path(module_name, self.script_path.parent)
+            if module_found is not None:
+                sys.path.append(module_found)
 
     def _load_file_ast(self) -> ast.parse:
         with open(self.script_path, "r") as file:
             return ast.parse(file.read())
-
-    def _add_imports(self) -> None:
-        """
-        Add all found imports to the running gloabal namespace
-        """
-        try:
-            sys.path.append(find_module_path(i) for i in self._imported_modules)
-        except:
-            raise "Error while adding imports modules"
 
     def module(self):
         """
