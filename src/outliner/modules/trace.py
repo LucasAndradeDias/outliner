@@ -10,7 +10,6 @@ from typing import Optional
 
 class ExceptionWhileTracing(Exception):
     """Exception Subclass to be raise with the first exception while tracing an object"""
-
     pass
 
 
@@ -41,24 +40,6 @@ class Trace:
         finally:
             sys.settrace(None)
 
-    def _get_object_arguments(self, obj: str):
-        parenthesis_1 = obj.index("(")
-        parenthesis_2 = obj.index(")")
-        obj_arguments = obj[parenthesis_1 + 1 : parenthesis_2].split(",")
-
-        return None if not any(obj_arguments) else obj_arguments
-
-    def _create_obj_instance(self, module: any, object_: str):
-        object_name = object_.split("(")[0]
-        object_arguments = self._get_object_arguments(object_)
-
-        obj_instance = getattr(module, object_name, None)
-
-        if object_arguments:
-            obj_instance = partial(obj_instance, *object_arguments)
-
-        return obj_instance
-
     def run_file(
         self,
         module_path: Path,
@@ -73,10 +54,11 @@ class Trace:
         module_name = module_path.stem
 
         moduleSpec = importlib.util.spec_from_file_location(module_name, module_path)
-        module_obj = importlib.util.module_from_spec(moduleSpec)
+        module_obj = importlib.util(moduleSpec)
 
         moduleSpec.loader.exec_module(module_obj)
 
+        # Check the type of the object(class method or function)
         if len(object_to_run.split(".")) >= 2:
             obj_class_instance = self._create_obj_instance(
                 module_obj, object_to_run.split(".")[0]
@@ -90,6 +72,12 @@ class Trace:
         if not callable(running_obj):
             raise Exception("given object '%s' is not callable." % (module_name))
 
+        self._running_trace(running_obj)
+
+    def trace_obj(self,running_obj):
+        
+        if not callable(running_obj):
+            raise Exception("given object '%s' is not callable." % (module_name))
         self._running_trace(running_obj)
 
     def __str__(self):

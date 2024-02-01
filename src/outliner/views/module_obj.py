@@ -1,9 +1,9 @@
 import ast
-import sys
 
 from importlib import util
 from pathlib import Path
-from utils.find_module import find_module_path
+from utils.util_modules import find_module_path
+from utils.loader import Loader
 
 
 class Script_Obj:
@@ -21,7 +21,14 @@ class Script_Obj:
         self.script_path = script_path
         self.object_ast = self._load_file_ast()
         self._imported_modules = self._find_imported_modules()
-        self._add_imports()
+
+        # Set with all imported modules the module obj contains
+        self.used_modules = set(())
+
+        for module in self._imported_modules:
+            mod_path = find_module_path(module, self.script_path.parent)
+            if mod_path:
+                self.used_modules.add((module, mod_path))
 
     def _find_imported_modules(self) -> iter:
         """
@@ -36,26 +43,29 @@ class Script_Obj:
                     yield node.module
         return []
 
-    def _add_imports(self):
-        """
-        Add all local modules used in script to the global namespace
-        """
-        for module_name in self._imported_modules:
-            module_found = find_module_path(module_name, self.script_path.parent)
-            if module_found is not None:
-                sys.path.append(module_found)
-
     def _load_file_ast(self) -> ast.parse:
         with open(self.script_path, "r") as file:
             return ast.parse(file.read())
 
     def module(self):
         """
-        Return a spec (https://peps.python.org/pep-0451/) object for running the module
+        Return a ModuleSpec (https://peps.python.org/pep-0451/) object of a module
         """
+
+        # class _NamespacePath adiciona pro namespace
+
+        # This class is actually exposed publicly in a namespace package's __loader__
+        # # attribute, so it should be available through a non-private name.
+        # # https://bugs.python.org/issue35673
+        # class NamespaceLoader:
+
         module_name = self.script_path.stem
-        moduleSpec = util.spec_from_file_location(module_name, self.script_path)
-        module_obj = util.module_from_spec(moduleSpec)
-        moduleSpec.loader.exec_module(module_obj)
+        module_spec = util.spec_from_file_location(
+            name=module_name,
+            location=self.script_path,
+            submodule_search_locations=["D:\projects\scripts\outliner\tests-outliner"],
+        )
+        module_obj = util.module_from_spec(module_spec)
+        module_spec.loader.exec_module(module_obj)
 
         return module_obj
