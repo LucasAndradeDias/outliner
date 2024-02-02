@@ -10,6 +10,7 @@ from typing import Optional
 
 class ExceptionWhileTracing(Exception):
     """Exception Subclass to be raise with the first exception while tracing an object"""
+
     pass
 
 
@@ -31,8 +32,9 @@ class Trace:
 
     def _running_trace(self, obj) -> None:
         try:
+            instance = obj.running_obj
             sys.settrace(self._trace_function)
-            obj()
+            instance()
         except ExceptionWhileTracing as error:
             return
         except Exception as error:
@@ -46,6 +48,8 @@ class Trace:
         object_to_run: str,
     ) -> None:
         """
+        DEPRICATED MODULE
+        USE 'trace_obj' method
         Trace a file
 
         :param Path-like module_path: The path to the module
@@ -74,10 +78,9 @@ class Trace:
 
         self._running_trace(running_obj)
 
-    def trace_obj(self,running_obj):
-        
+    def trace_obj(self, running_obj):
         if not callable(running_obj):
-            raise Exception("given object '%s' is not callable." % (module_name))
+            raise Exception("given object '%s' is not callable." % (running_obj))
         self._running_trace(running_obj)
 
     def __str__(self):
