@@ -1,4 +1,4 @@
-from .module_obj import Script_Obj
+from .module_obj import ModuleObject
 from functools import partial
 
 
@@ -7,9 +7,16 @@ class Running_Obj:
     Create an running object from a module obj
     """
 
-    def __init__(self, script_obj: Script_Obj, obj_invoking: str):
+    def __init__(self, script_obj: ModuleObject, obj_invoking: str):
         self.obj_invoking = obj_invoking
         self.script_obj = script_obj
+        self.father_module = self.script_obj.module()
+
+        # load the module to the global namespace
+        self.father_module[1].loader.exec_module(self.father_module[0])
+
+        self.running_obj = None
+        self.instance()
 
     def _get_object_arguments(self, obj: str):
         parenthesis_1 = obj.index("(")
@@ -30,18 +37,19 @@ class Running_Obj:
         return obj_instance
 
     def instance(self):
-        """Returns a instance of the object"""
+        """Creates an instance of the object"""
         running_obj = None
-        father = self.script_obj.module()
         objs = self.obj_invoking.split(".") or [self.obj_invoking]
 
         for number, _ in enumerate(objs):
-            running_obj = self._create_obj_instance(father[0], objs[number])
+            running_obj = self._create_obj_instance(self.father_module[0], objs[number])
             if len(objs) == number:
                 break
-            father = running_obj()
+            self.father_module = running_obj()
+
+        self.running_obj = running_obj
 
         return running_obj
 
     def __call__(self):
-        self.instance()
+        self.running_obj()

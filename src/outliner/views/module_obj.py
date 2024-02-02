@@ -1,12 +1,13 @@
+import sys
 import ast
+import importlib
 
 from importlib import util
 from pathlib import Path
-from utils.util_modules import find_module_path
-from utils.loader import Loader
+from utils.loader import CustomLoader
 
 
-class Script_Obj:
+class ModuleObject:
     """
     Run all needed pre-sets to run the trace_object.
 
@@ -16,25 +17,27 @@ class Script_Obj:
 
     def __init__(
         self,
-        script_path: Path,
+        module_path: Path,
     ):
-        self.script_path = script_path
-        self.object_ast = self._load_file_ast()
-        self._imported_modules = self._find_imported_modules()
+        self.module_path = module_path
+        self.module_ast = self._load_file_ast()
+        self.found_submodules = self._find_imported_modules()
 
-        # Set with all imported modules the module obj contains
-        self.used_modules = set(())
+        sys.path.append(str(module_path.parent))
 
-        for module in self._imported_modules:
-            mod_path = find_module_path(module, self.script_path.parent)
-            if mod_path:
-                self.used_modules.add((module, mod_path))
+        for submodule in self.found_submodules:
+            try:
+                importlib.import_module(submodule)
+            except ModuleNotFoundError:
+                raise ModuleNotFoundError(
+                    f"Could not add the submodule '{submodule}' to the namespace.\n check if the module is installed."
+                )
 
     def _find_imported_modules(self) -> iter:
         """
         A generator with all imports the ast object contains in its namespace
         """
-        for node in ast.walk(self.object_ast):
+        for node in ast.walk(self.module_ast):
             if isinstance(node, ast.Import):
                 for alias in node.names:
                     yield alias.name
@@ -44,28 +47,18 @@ class Script_Obj:
         return []
 
     def _load_file_ast(self) -> ast.parse:
-        with open(self.script_path, "r") as file:
+        with open(self.module_path, "r") as file:
             return ast.parse(file.read())
 
     def module(self):
         """
-        Return a ModuleSpec (https://peps.python.org/pep-0451/) object of a module
+        Return a the ModuleObj and the ModuleSpec (https://peps.python.org/pep-0451/) of the module
         """
-
-        # class _NamespacePath adiciona pro namespace
-
-        # This class is actually exposed publicly in a namespace package's __loader__
-        # # attribute, so it should be available through a non-private name.
-        # # https://bugs.python.org/issue35673
-        # class NamespaceLoader:
-
-        module_name = self.script_path.stem
+        module_name = self.module_path.stem
         module_spec = util.spec_from_file_location(
-            name=module_name,
-            location=self.script_path,
-            submodule_search_locations=["D:\projects\scripts\outliner\tests-outliner"],
+            name=module_name, location=self.module_path, loader=CustomLoader
         )
-        module_obj = util.module_from_spec(module_spec)
-        module_spec.loader.exec_module(module_obj)
 
-        return module_obj
+        module_obj = util.module_from_spec(module_spec)
+
+        return module_obj, module_spec
