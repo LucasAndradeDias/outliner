@@ -9,7 +9,6 @@ def parser_arguments():
         "-fp",
         help="Path to the file you want to trace",
         required=True,
-        nargs=1,
     )
     parser.add_argument(
         "--object_invoke",
@@ -17,7 +16,6 @@ def parser_arguments():
         help="The invoking statement of the object",
         type=str,
         required=True,
-        nargs=1,
     )
     parser.add_argument(
         "--mode",
@@ -33,7 +31,6 @@ def parser_arguments():
 
 def main():
     args = parser_arguments()
-
     instance_class = Outliner(
         args.file_path,
         args.object_invoke,
