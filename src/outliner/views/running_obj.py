@@ -12,8 +12,11 @@ class Running_Obj:
         self.script_obj = script_obj
         self.father_module = self.script_obj.module()
 
+        self.module_obj = self.father_module[0]
+        self.module_spec = self.father_module[1]
+
         # load the module to the global namespace
-        self.father_module[1].loader.exec_module(self.father_module[0])
+        self.module_spec.loader.exec_module(self.module_obj)
 
         self.running_obj = None
         self.instance()
@@ -28,7 +31,6 @@ class Running_Obj:
     def _create_obj_instance(self, namespace: any, object_: str):
         object_name = object_.split("(")[0]
         object_arguments = self._get_object_arguments(object_)
-
         obj_instance = getattr(namespace, object_name, None)
 
         if object_arguments is not None:
@@ -39,17 +41,16 @@ class Running_Obj:
     def instance(self):
         """Creates an instance of the object"""
         running_obj = None
+        father = self.module_obj
         objs = self.obj_invoking.split(".") or [self.obj_invoking]
-
         for number, _ in enumerate(objs):
-            running_obj = self._create_obj_instance(self.father_module[0], objs[number])
+            running_obj = self._create_obj_instance(father, objs[number])
             if len(objs) == number:
                 break
-            self.father_module = running_obj()
+            father = running_obj
 
-        self.running_obj = running_obj
-
+        self.running_obj = father
         return running_obj
 
     def __call__(self):
-        self.running_obj()
+        self.instance()

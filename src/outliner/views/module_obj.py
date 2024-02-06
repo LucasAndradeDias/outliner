@@ -4,7 +4,7 @@ import importlib
 
 from importlib import util
 from pathlib import Path
-from utils.loader import CustomLoader
+from ..utils.loader import CustomLoader
 
 
 class ModuleObject:
@@ -58,7 +58,6 @@ class ModuleObject:
         module_spec = util.spec_from_file_location(
             name=module_name, location=self.module_path, loader=CustomLoader
         )
-
         module_obj = util.module_from_spec(module_spec)
 
         return module_obj, module_spec
