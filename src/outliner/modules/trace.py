@@ -1,8 +1,6 @@
 import sys
 import collections
 
-from typing import Optional
-
 from ..views import RunningObject
 
 
@@ -10,6 +8,8 @@ class ExceptionWhileTracing(Exception):
     """Exception Subclass to be raise with the first exception while tracing an object"""
 
     pass
+
+
 
 
 class Trace:
