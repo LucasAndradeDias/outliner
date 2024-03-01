@@ -3,6 +3,8 @@ import collections
 
 from typing import Optional
 
+from ..views import RunningObject
+
 
 class ExceptionWhileTracing(Exception):
     """Exception Subclass to be raise with the first exception while tracing an object"""
@@ -11,6 +13,7 @@ class ExceptionWhileTracing(Exception):
 
 
 class Trace:
+
     def __init__(self):
         self.detailed_data = collections.defaultdict(
             lambda: {"call": 0, "return": 0, "line": 0, "exception": 0}
@@ -38,9 +41,9 @@ class Trace:
         finally:
             sys.settrace(None)
 
-    def trace_obj(self, running_obj):
+    def trace_obj(self, running_obj: RunningObject):
         if not callable(running_obj):
-            raise Exception(f"given object '{running_obj}' is not callable.")
+            raise Exception(f"Given object '{running_obj}' is not callable.")
         self._running_trace(running_obj)
 
     def __str__(self):

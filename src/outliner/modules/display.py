@@ -37,9 +37,11 @@ class Display:
             connect_branch = (
                 lines
                 + self.ansi_for_tree[
-                    "CHILD_OBJECT_ANSI"
-                    if not func_With_exception
-                    else "CHILD_WITH_EXECEPTION"
+                    (
+                        "CHILD_OBJECT_ANSI"
+                        if not func_With_exception
+                        else "CHILD_WITH_EXECEPTION"
+                    )
                 ]
                 + f"{position}. "
                 + func

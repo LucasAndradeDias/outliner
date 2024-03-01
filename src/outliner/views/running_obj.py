@@ -2,7 +2,7 @@ from .module_obj import ModuleObject
 from functools import partial
 
 
-class Running_Obj:
+class RunningObject:
     """
     Create an running object from a module obj
     """

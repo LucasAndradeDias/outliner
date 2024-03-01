@@ -5,7 +5,7 @@ from pathlib import Path
 from .modules.trace import Trace
 from .modules.display import Display
 
-from .views import ModuleObject, Running_Obj
+from .views import ModuleObject, RunningObject
 
 
 class Outliner:
@@ -27,7 +27,7 @@ class Outliner:
             raise ValueError("Not valid callable syntax")
 
         module_obj = ModuleObject(Path(self.file))
-        running_obj = Running_Obj(module_obj, self.obj_name)
+        running_obj = RunningObject(module_obj, self.obj_name)
 
         trace = Trace()
         trace.trace_obj(running_obj)
