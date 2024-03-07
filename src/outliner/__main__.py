@@ -38,3 +38,6 @@ def main():
     )
 
     instance_class.run()
+
+if __name__ == "__main__":
+    main()
