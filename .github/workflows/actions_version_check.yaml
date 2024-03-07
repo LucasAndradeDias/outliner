@@ -1,0 +1,21 @@
+name: Run unittests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  python36:
+    runs-on: ubuntu-latest  # Replace with desired runner
+    container:
+      image: python:3.6-slim  # Use a compatible Node.js image (consider using python:3.4-slim)
+      ports:
+        - "80"  # Enclose port in quotes for consistency
+      volumes:
+        - ./:/app  # Mount local project directory (adjust path if needed)
+    steps:
+      - uses: actions/checkout@v3  # Download code from GitHub (recommended)
+      - name: Unit test in python 3.6
+        run: python3 -m unittest discover ./tests
+
+
