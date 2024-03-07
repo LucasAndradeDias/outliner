@@ -1,11 +1,7 @@
 import sys
-
 import collections
-import importlib.util
 
-from functools import partial
-from pathlib import Path
-from typing import Optional
+from ..views import RunningObject
 
 
 class ExceptionWhileTracing(Exception):
@@ -14,7 +10,10 @@ class ExceptionWhileTracing(Exception):
     pass
 
 
+
+
 class Trace:
+
     def __init__(self):
         self.detailed_data = collections.defaultdict(
             lambda: {"call": 0, "return": 0, "line": 0, "exception": 0}
@@ -32,64 +31,19 @@ class Trace:
 
     def _running_trace(self, obj) -> None:
         try:
+            instance = obj.instance()
             sys.settrace(self._trace_function)
-            obj()
+            instance()
         except ExceptionWhileTracing as error:
             return
-        except Exception as error:
-            raise error
+        except Exception:
+            raise Exception("Erro durante execução")
         finally:
             sys.settrace(None)
 
-    def _get_object_arguments(self, obj: str):
-        parenthesis_1 = obj.index("(")
-        parenthesis_2 = obj.index(")")
-        obj_arguments = obj[parenthesis_1 + 1 : parenthesis_2].split(",")
-
-        return None if not any(obj_arguments) else obj_arguments
-
-    def _create_obj_instance(self, module: any, object_: str):
-        object_name = object_.split("(")[0]
-        object_arguments = self._get_object_arguments(object_)
-
-        obj_instance = getattr(module, object_name, None)
-
-        if object_arguments:
-            obj_instance = partial(obj_instance, *object_arguments)
-
-        return obj_instance
-
-    def run_file(
-        self,
-        module_path: Path,
-        object_to_run: str,
-    ) -> None:
-        """
-        Trace a file
-
-        :param Path-like module_path: The path to the module
-        :param str object_to_run: The object to be traced inside the module
-        """
-        module_name = module_path.stem
-
-        moduleSpec = importlib.util.spec_from_file_location(module_name, module_path)
-        module_obj = importlib.util.module_from_spec(moduleSpec)
-
-        moduleSpec.loader.exec_module(module_obj)
-
-        if len(object_to_run.split(".")) >= 2:
-            obj_class_instance = self._create_obj_instance(
-                module_obj, object_to_run.split(".")[0]
-            )()
-            running_obj = self._create_obj_instance(
-                obj_class_instance, object_to_run.split(".")[1]
-            )
-        else:
-            running_obj = self._create_obj_instance(module_obj, object_to_run)
-
+    def trace_obj(self, running_obj: RunningObject):
         if not callable(running_obj):
-            raise Exception("given object '%s' is not callable." % (module_name))
-
+            raise Exception(f"Given object '{running_obj}' is not callable.")
         self._running_trace(running_obj)
 
     def __str__(self):
