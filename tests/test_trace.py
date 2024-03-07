@@ -60,3 +60,24 @@ class TestTrace(unittest.TestCase):
         self.parser.trace_obj(module_running_obj_2)
         expected_trace = r"Trace object\nrunned objects:\n    __init__ + \n    func1 + \n    func2 + \n    test2 + \n    "
         self.assertEqual(expected_trace, repr(self.parser))
+
+    def test_trace_run_with_imported_files(self):
+        """
+        Given a valid module path and a callable function "test",
+        When Trace.trace_obj is called twice with these parameters,
+        Then it should trace the functions individually and produce the expected trace result for each run.
+        """
+        module_path = ModuleObject(Path(self.mock_path + "/multifiles/origin.py"))
+        
+        module_running = RunningObject(module_path, "test1()")
+        
+        self.parser.trace_obj(module_running)
+
+        expected_trace = (r"Trace object\nrunned objects:"
+            r"\n    test1 + \n    test2 + \n    test3 + \n    test4 + \n    "
+            r"test5 + \n    final + \n    __init__ + \n    method1 + \n    "
+            r"method2 + \n    method_math + \n    final_function + \n    ")
+
+        self.assertEqual(expected_trace, repr(self.parser))
+
+
