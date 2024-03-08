@@ -82,6 +82,12 @@ As the library hasn't been released yet, to use it on your machine, you will nee
 	``` 
 	pip install -i outliner-tracer
 	```
+-	**Clone from github and install locally:**
+	``` 
+	git clone https://github.com/LucasAndradeDias/outliner
+ 	pip install ./outliner
+	```
+
 
 ## Usage
 
@@ -95,6 +101,10 @@ The Outliner library can be used via the command-line interface (CLI) to trace P
 bashCopy code
 
 `outliner --file_path=<path-to-object> --object_invoke=<object-invoking>` 
+
+## Python supported versions
+Outliner is compatible with Python versions 3.6 to 3.12.
+
 
 ## Command Line Options
 
