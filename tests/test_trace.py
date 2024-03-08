@@ -67,17 +67,16 @@ class TestTrace(unittest.TestCase):
         When Trace.trace_obj is called twice with these parameters,
         Then it should trace the functions individually and produce the expected trace result for each run.
         """
-        module_path = ModuleObject(Path(self.mock_path + "/multifiles/origin.py"))
-        
-        module_running = RunningObject(module_path, "test1()")
-        
+        module_path = ModuleObject(Path(self.mock_path + "/new/module_1.py"))
+
+        module_running = RunningObject(module_path, "main()")
+
         self.parser.trace_obj(module_running)
 
-        expected_trace = (r"Trace object\nrunned objects:"
-            r"\n    test1 + \n    test2 + \n    test3 + \n    test4 + \n    "
-            r"test5 + \n    final + \n    __init__ + \n    method1 + \n    "
-            r"method2 + \n    method_math + \n    final_function + \n    ")
+        expected_trace = (
+            r"Trace object\nrunned objects:"
+            r"\n    main + \n    __init__ + "
+            r"\n    calculate_area + \n    "
+            r"load_data + \n    analyze_data + \n    ")
 
         self.assertEqual(expected_trace, repr(self.parser))
-
-

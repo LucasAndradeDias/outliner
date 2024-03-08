@@ -2,20 +2,91 @@ name: Run unittests
 
 on:
   push:
-  pull_request:
+    branches: [ master ]
 
 jobs:
   python36:
-    runs-on: ubuntu-latest  # Replace with desired runner
+    runs-on: ubuntu-latest
     container:
-      image: python:3.6-slim  # Use a compatible Node.js image (consider using python:3.4-slim)
+      image: python:3.6-slim
       ports:
-        - "80"  # Enclose port in quotes for consistency
+        - "80"
       volumes:
-        - ./:/app  # Mount local project directory (adjust path if needed)
+        - ./:/app
     steps:
-      - uses: actions/checkout@v3  # Download code from GitHub (recommended)
+      - uses: actions/checkout@v3
       - name: Unit test in python 3.6
         run: python3 -m unittest discover ./tests
-
+  python37:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.7-slim
+      ports:
+        - "80" 
+      volumes:
+        - ./:/app
+    steps:
+      - uses: actions/checkout@v3 
+      - name: Unit tests in python 3.7
+        run: python3 -m unittest discover ./tests
+  python38:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.8-slim
+      ports:
+        - "80" 
+      volumes:
+        - ./:/app
+    steps:
+      - uses: actions/checkout@v3 
+      - name: Unit tests in python 3.8
+        run: python3 -m unittest discover ./tests
+  python39:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.9-slim
+      ports:
+        - "80" 
+      volumes:
+        - ./:/app
+    steps:
+      - uses: actions/checkout@v3 
+      - name: Unit tests in python 3.9
+        run: python3 -m unittest discover ./tests
+  python310:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.10-slim
+      ports:
+        - "80" 
+      volumes:
+        - ./:/app
+    steps:
+      - uses: actions/checkout@v3 
+      - name: Unit tests in python 3.10
+        run: python3 -m unittest discover ./tests
+  python311:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.11-slim
+      ports:
+        - "80" 
+      volumes:
+        - ./:/app
+    steps:
+      - uses: actions/checkout@v3 
+      - name: Unit tests in python 3.11
+        run: python3 -m unittest discover ./tests
+  python312:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.12-slim
+      ports:
+        - "80" 
+      volumes:
+        - ./:/app
+    steps:
+      - uses: actions/checkout@v3 
+      - name: Unit tests in python 3.12
+        run: python3 -m unittest discover ./tests
 
