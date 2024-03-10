@@ -57,9 +57,6 @@ class Trace:
             raise Exception(f"Given object '{running_obj}' is not callable.")
         self._running_trace(running_obj)
 
-    def abc(self):
-        print("")
-
     def __str__(self):
         text = "Trace object\nrunned objects:\n    "
 

@@ -43,8 +43,12 @@ class Display:
                         else "CHILD_WITH_EXECEPTION"
                     )
                 ]
-                + f"{position}. "
+                + f"{str(position)}. "
                 + func
+                + " " * (50 - len(func))
+                + str(self.detail_data[func]["file"].name)
+                + "     "
+                + str(self.detail_data[func]["start_line"])
                 + "\n"
                 + self.ansi_for_tree["RESET"]
             )
