@@ -31,6 +31,7 @@ class TestTrace(unittest.TestCase):
         module_obj = ModuleObject(Path(self.mock_path + "/module_testing_1.py"))
         module_running_obj = RunningObject(module_obj, "test()")
         self.parser.trace_obj(module_running_obj)
+
         expected_trace = r"Trace object\nrunned objects:\n    __init__ + \n    func1 + \n    func2 + \n    "
         self.assertEqual(expected_trace, repr(self.parser))
 
@@ -55,6 +56,7 @@ class TestTrace(unittest.TestCase):
         """
         module_path = ModuleObject(Path(self.mock_path + "/module_testing_1.py"))
         module_running_obj_1 = RunningObject(module_path, "test()")
+
         module_running_obj_2 = RunningObject(module_path, "test2()")
         self.parser.trace_obj(module_running_obj_1)
         self.parser.trace_obj(module_running_obj_2)
@@ -63,7 +65,7 @@ class TestTrace(unittest.TestCase):
 
     def test_trace_run_with_imported_files(self):
         """
-        Given a valid module path and a callable function "test",
+        Given a valid module path and a callable function "main",
         When Trace.trace_obj is called twice with these parameters,
         Then it should trace the functions individually and produce the expected trace result for each run.
         """
@@ -76,7 +78,7 @@ class TestTrace(unittest.TestCase):
         expected_trace = (
             r"Trace object\nrunned objects:"
             r"\n    main + \n    __init__ + "
-            r"\n    calculate_area + \n    "
+            r"\n    calculate_area1 + \n    calculate_area + \n    "
             r"load_data + \n    analyze_data + \n    ")
 
         self.assertEqual(expected_trace, repr(self.parser))
