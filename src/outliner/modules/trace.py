@@ -1,6 +1,7 @@
 import sys
 import collections
 
+from pathlib import Path
 from ..views import RunningObject
 
 
@@ -10,20 +11,30 @@ class ExceptionWhileTracing(Exception):
     pass
 
 
-
-
 class Trace:
 
     def __init__(self):
         self.detailed_data = collections.defaultdict(
-            lambda: {"call": 0, "return": 0, "line": 0, "exception": 0}
+            lambda: {
+                "call": 0,
+                "return": 0,
+                "line": 0,
+                "exception": 0,
+                "file": Path(),
+                "start_line": int,
+            }
         )
         self.functions_flow = collections.OrderedDict()
 
     def _trace_function(self, frame, event, arg):
         self.detailed_data[frame.f_code.co_name][str(event)] += 1
         self.functions_flow[frame.f_code.co_name] = None
-
+        self.detailed_data[frame.f_code.co_name]["file"] = Path(
+            frame.f_code.co_filename
+        )
+        self.detailed_data[frame.f_code.co_name][
+            "start_line"
+        ] = frame.f_code.co_firstlineno
         if str(event) == "exception":
             raise ExceptionWhileTracing()
 
