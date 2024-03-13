@@ -38,11 +38,11 @@ output:
 ```bash
     test2
     │
-    │──1. __init__
+    │──1. __init__                                          module_testing_1.py     2
     │
-    │──2. func1
+    │──2. func1                                             module_testing_1.py     5
     │
-    │──3. func2
+    │──3. func2                                             module_testing_1.py     9
 ```
 
 (If some exception was raised while tracing, the broken object will appear write in red color.)
@@ -110,7 +110,7 @@ Outliner is compatible with Python versions 3.6 to 3.12.
 
 -   `--file_path`(Required): Specifies the path to the Python module containing the object to be traced.
     
--   `--object_invoke`(Required): The invoking stetament of the object you want to trace.
+-   `--object_invoke | -o `(Required): The invoking stetament of the object you want to trace.
     
 -   `--mode`(Optional): The output mode (tree or detaield_data).
 
