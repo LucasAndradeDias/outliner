@@ -79,6 +79,7 @@ class TestTrace(unittest.TestCase):
             r"Trace object\nrunned objects:"
             r"\n    main + \n    __init__ + "
             r"\n    calculate_area1 + \n    calculate_area + \n    "
-            r"load_data + \n    analyze_data + \n    ")
+            r"load_data + \n    analyze_data + \n    "
+        )
 
         self.assertEqual(expected_trace, repr(self.parser))

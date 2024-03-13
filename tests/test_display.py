@@ -2,13 +2,13 @@ import unittest
 import collections
 import sys
 
-from pathlib import Path 
+from pathlib import Path
 from src.outliner import Display
 from unittest.mock import patch
 from io import StringIO
 
 
-PATH = Path(str(Path(__file__).resolve() / "data" ) + "/module_testing_1.py")
+PATH = Path(str(Path(__file__).resolve() / "data") + "/module_testing_1.py")
 
 functions_flow = collections.OrderedDict(
     [("test2", None), ("__init__", None), ("func1", None), ("func2", None)]
@@ -30,7 +30,14 @@ detail_data_with_exception = collections.defaultdict(
         "test2": {"call": 1, "return": 1, "line": 2, "file": PATH, "start_line": 13},
         "__init__": {"call": 1, "return": 1, "line": 1, "file": PATH, "start_line": 2},
         "func1": {"call": 1, "return": 1, "line": 2, "file": PATH, "start_line": 5},
-        "func2": {"call": 1, "return": 1, "line": 1, "exception": 1, "file": PATH, "start_line": 9},
+        "func2": {
+            "call": 1,
+            "return": 1,
+            "line": 1,
+            "exception": 1,
+            "file": PATH,
+            "start_line": 9,
+        },
     },
 )
 

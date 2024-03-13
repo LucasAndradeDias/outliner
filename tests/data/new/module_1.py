@@ -7,7 +7,7 @@ class Shape:
         self.shape_type = shape_type
         self.dimensions = dimensions
 
-    def calculate_area(self):
+    def calculate_area1(self):
         area = calculate_area(self.shape_type, self.dimensions)
 
 
@@ -19,7 +19,7 @@ def main():
     ]
 
     for shape in shapes:
-        shape.calculate_area()
+        shape.calculate_area1()
 
     processor = DataProcessor()
     data = processor.load_data("sample_data.txt")
