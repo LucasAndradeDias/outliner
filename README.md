@@ -82,6 +82,10 @@ As the library hasn't been released yet, to use it on your machine, you will nee
 	``` 
 	pip install -i outliner-tracer
 	```
+-	**Install from github:**
+	``` 
+	pip install git+https://github.com/LucasAndradeDias/outliner
+ 	```
 -	**Clone from github and install locally:**
 	``` 
 	git clone https://github.com/LucasAndradeDias/outliner
