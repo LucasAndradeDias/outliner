@@ -1,6 +1,7 @@
 import sys
 import ast
 import importlib
+import os
 
 from importlib import util
 from pathlib import Path
@@ -29,9 +30,21 @@ class ModuleObject:
             try:
                 importlib.import_module(submodule)
             except ModuleNotFoundError:
+                self._try_find_folder_of_submodule(submodule)
                 raise ModuleNotFoundError(
                     f"Could not add the submodule '{submodule}' to the namespace.\n check if the module is installed."
                 )
+
+    def _try_find_folder_of_submodule(self, name: str):
+        base_path = self.module_path
+        submodule_as_path = name.replace(".", "/")
+        for dad_parent in base_path.parents:
+            pat = Path(str(dad_parent) + "/" + submodule_as_path + ".py")
+            if pat.is_file():
+                sys.path.append(pat)
+                importlib.import_module(name)
+
+        return True
 
     def _find_imported_modules(self) -> iter:
         """
