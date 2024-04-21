@@ -1,5 +1,7 @@
 import sys
 import collections
+import os
+
 
 from pathlib import Path
 from ..views import RunningObject
@@ -27,6 +29,7 @@ class Trace:
         self.functions_flow = collections.OrderedDict()
 
     def _trace_function(self, frame, event, arg):
+
         self.detailed_data[frame.f_code.co_name][str(event)] += 1
         self.functions_flow[frame.f_code.co_name] = None
         self.detailed_data[frame.f_code.co_name]["file"] = Path(
@@ -35,22 +38,22 @@ class Trace:
         self.detailed_data[frame.f_code.co_name][
             "start_line"
         ] = frame.f_code.co_firstlineno
-        if str(event) == "exception":
-            raise ExceptionWhileTracing()
 
         return self._trace_function
 
     def _running_trace(self, obj) -> None:
         try:
             instance = obj.instance()
+            sys.stdout = open(os.devnull, "w")
             sys.settrace(self._trace_function)
             instance()
-        except ExceptionWhileTracing as error:
-            return
-        except Exception:
-            raise Exception("Erro durante execução")
+            sys.settrace(None)
+        except Exception as error:
+            raise (f"Erro durante execução: {str(error)}")
         finally:
             sys.settrace(None)
+            sys.stdout = sys.__stdout__
+            return
 
     def trace_obj(self, running_obj: RunningObject):
         if not callable(running_obj):
